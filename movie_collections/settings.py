@@ -88,9 +88,11 @@ DATABASES = {
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-
     ),
+    'APPEND_SLASH': True,
 }
+
+APPEND_SLASH = False
 
 # Django Rest Framework Simple JWT Settings
 SIMPLE_JWT = {

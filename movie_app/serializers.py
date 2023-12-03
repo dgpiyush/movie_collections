@@ -67,3 +67,4 @@ class CollectionSerializer(serializers.ModelSerializer):
             movie.is_valid(raise_exception=True)
             collection.movies.add(movie.save())
         return collection
+    

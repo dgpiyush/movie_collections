@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import generics, permissions
-from movie_app.models import Collection
+from movie_app.models import Collection, Movie
 from movie_app.serializers import (
     CollectionSerializer,
     LoginSerializer,
@@ -138,31 +138,18 @@ class CollectionListView(generics.ListCreateAPIView):
 
 
 
-# class CollectionDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = MovieCollection.objects.all()
-#     serializer_class = MovieCollectionSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def update(self, request, *args, **kwargs):
-#         partial = kwargs.pop("partial", False)
-#         instance = self.get_object()
-#         serializer = self.get_serializer(instance, data=request.data, partial=partial)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_update(serializer)
-#         return Response(serializer.data)
+class CollectionDetailView(generics.RetrieveDestroyAPIView):
+    lookup_field='uuid'
+    serializer_class = CollectionSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# class CollectionMoviesView(generics.RetrieveAPIView):
-#     queryset = MovieCollection.objects.all()
-#     serializer_class = MovieCollectionSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def retrieve(self, request, *args, **kwargs):
-#         instance = self.get_object()
-#         serializer = self.get_serializer(instance)
-#         return Response(serializer.data["movies"])
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Collection.objects.filter(user=user)
+        print(queryset,"quryset")
+        return Collection.objects.filter(user=user)
 
     def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.movies.all().delete()  # Deleting all movies related to the collection
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        print("deleting..")
+        return super().delete(request, *args, **kwargs)
