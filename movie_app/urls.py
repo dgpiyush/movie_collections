@@ -11,6 +11,8 @@ urlpatterns = [
         views.CollectionDetailView.as_view(),
         name="collection-detail",
     ),
-    path("collection/<uuid:uuid>/", views.CollectionDetailView.as_view(), name="collection-detail"),
+    path('request-count/', views.request_count, name='request-count'),
+    path('request-count/reset/', views.reset_request_count, name='reset-request-count'),
+   
 
 ]

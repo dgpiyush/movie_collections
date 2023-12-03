@@ -1,4 +1,5 @@
 from collections import Counter
+from django.conf import settings
 import requests
 from django.http import JsonResponse
 from rest_framework import status
@@ -13,6 +14,19 @@ from movie_app.serializers import (
     LoginSerializer,
     RegistrationSerializer,
 )
+
+
+
+
+@api_view(["GET"])
+def request_count(request):
+    return JsonResponse({"requests": request.total_request_count})
+
+@api_view(["POST"])
+def reset_request_count(request):
+    request.total_request_count = 0
+    settings.TOTAL_REQUEST_COUNT = 0
+    return JsonResponse({"message": "Request count reset successfully"})
 
 
 @api_view(["GET"])
